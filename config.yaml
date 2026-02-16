@@ -10,7 +10,7 @@ collections:
     emoji: "📚"
     db_path: "../book-manager/books.db"
     site_path_file: "../book-manager/site/index.html"
-    site_path_http: "https://site-tawny-beta.vercel.app"
+    site_path_http: "https://pauls-books.vercel.app"
     accent_color: "#8b2942"
     db_table: "books"
 
