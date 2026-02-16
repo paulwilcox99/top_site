@@ -1,0 +1,39 @@
+# Top-Level Site Aggregator Configuration
+# =========================================
+
+# Deployment mode: 'file' for file:// protocol, 'http' for web server
+deployment_mode: 'file'  # Can be changed to 'http' for web hosting
+
+# Collection definitions
+collections:
+  - name: "Books"
+    emoji: "📚"
+    db_path: "../books/books.db"
+    site_path_file: "../books/site/index.html"    # For file:// mode
+    site_path_http: "/books/index.html"           # For http:// mode
+    accent_color: "#8b2942"
+    db_table: "books"
+
+  - name: "Albums"
+    emoji: "🎵"
+    db_path: "../albums/albums.db"
+    site_path_file: "../albums/site/index.html"
+    site_path_http: "/albums/index.html"
+    accent_color: "#e91e63"
+    db_table: "albums"
+
+  - name: "Broadway Shows"
+    emoji: "🎭"
+    db_path: "../shows/shows.db"
+    site_path_file: "../shows/site/index.html"
+    site_path_http: "/shows/index.html"
+    accent_color: "#c41e3a"
+    db_table: "shows"
+
+# Site configuration
+site:
+  title: "My Collections"
+  subtitle: "Books, Music & Theater"
+  output_dir: "site"
+  show_recent_items: true
+  recent_items_count: 5

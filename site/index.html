@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Collections</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --text: #2c3e50;
+            --text-muted: #7f8c8d;
+            --bg: #ffffff;
+            --bg-card: #f8f9fa;
+            --border: #e0e0e0;
+            --border-light: #f0f0f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .aggregate-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 8px;
+            border: 1px solid var(--border-light);
+        }
+
+        .aggregate-stat {
+            text-align: center;
+        }
+
+        .aggregate-stat-value {
+            font-size: 3rem;
+            color: var(--primary);
+            font-weight: normal;
+            font-family: Georgia, serif;
+        }
+
+        .aggregate-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin-top: 0.5rem;
+        }
+
+        .collections {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .collection-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.2s ease;
+        }
+
+        .collection-card:hover {
+            border-color: var(--collection-accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .collection-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--collection-accent);
+        }
+
+        .collection-emoji {
+            font-size: 2.5rem;
+        }
+
+        .collection-name {
+            font-size: 1.8rem;
+            font-weight: normal;
+            color: var(--collection-accent);
+        }
+
+        .collection-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            color: var(--collection-accent);
+            font-weight: normal;
+            font-family: Georgia, serif;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin-top: 0.5rem;
+        }
+
+        .recent-section {
+            margin-bottom: 2rem;
+        }
+
+        .recent-title {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .recent-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .recent-item {
+            background: var(--bg);
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .recent-item:hover {
+            border-color: var(--collection-accent);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .recent-item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .recent-item-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .recent-item-rating {
+            font-size: 0.85rem;
+            color: var(--collection-accent);
+        }
+
+        .rating {
+            color: var(--collection-accent);
+        }
+
+        .browse-button {
+            display: inline-block;
+            background: var(--collection-accent);
+            color: white;
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .browse-button:hover {
+            opacity: 0.9;
+            transform: translateX(4px);
+        }
+
+        .collection-unavailable {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            background: var(--bg);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .collection-stats { grid-template-columns: repeat(2, 1fr); }
+            .recent-items { grid-template-columns: 1fr; }
+            .aggregate-stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>My Collections</h1>
+        <div class="subtitle">Books, Music &amp; Theater</div>
+    </div>
+
+    <div class="aggregate-stats">
+        <div class="aggregate-stat">
+            <div class="aggregate-stat-value">11</div>
+            <div class="aggregate-stat-label">Total Items</div>
+        </div>
+        <div class="aggregate-stat">
+            <div class="aggregate-stat-value">3</div>
+            <div class="aggregate-stat-label">Collections</div>
+        </div>
+        <div class="aggregate-stat">
+            <div class="aggregate-stat-value">9.0</div>
+            <div class="aggregate-stat-label">Overall Avg Rating</div>
+        </div>
+    </div>
+
+    <div class="collections"><div class="collection-card" style="--collection-accent: #8b2942;"><div class="collection-header"><span class="collection-emoji">📚</span><h2 class="collection-name">Books</h2></div><div class="collection-stats"><div class="stat-item"><span class="stat-value">4</span><span class="stat-label">Total Books</span></div><div class="stat-item"><span class="stat-value">1</span><span class="stat-label">Read</span></div><div class="stat-item"><span class="stat-value">3</span><span class="stat-label">To Read</span></div></div><div class="recent-section"><h3 class="recent-title">Recently Added</h3><div class="recent-items"><div class="recent-item"><div class="recent-item-title">Meditations</div><div class="recent-item-meta">[&quot;Marcus Aurelius&quot;]</div></div><div class="recent-item"><div class="recent-item-title">Being You: A New Science of Consciousness</div><div class="recent-item-meta">[&quot;Anil Seth&quot;]</div></div><div class="recent-item"><div class="recent-item-title">The Legends and Myths of Hawai&#x27;i</div><div class="recent-item-meta">[&quot;Kal\u0101kaua&quot;]</div></div><div class="recent-item"><div class="recent-item-title">Olive Kitteridge</div><div class="recent-item-meta">[&quot;Elizabeth Strout&quot;]</div></div></div></div><a href="../books/site/index.html" class="browse-button">Browse Books →</a></div><div class="collection-card" style="--collection-accent: #e91e63;"><div class="collection-header"><span class="collection-emoji">🎵</span><h2 class="collection-name">Albums</h2></div><div class="collection-stats"><div class="stat-item"><span class="stat-value">4</span><span class="stat-label">Albums</span></div><div class="stat-item"><span class="stat-value">4</span><span class="stat-label">Artists</span></div><div class="stat-item"><span class="stat-value">9.0</span><span class="stat-label">Avg Rating</span></div></div><div class="recent-section"><h3 class="recent-title">Recently Added</h3><div class="recent-items"><div class="recent-item"><div class="recent-item-title">Clifford Brown In Paris</div><div class="recent-item-meta">Clifford Brown</div><div class="recent-item-rating"><span class="rating">★★★★★★★★★★</span> <span style="font-size: 0.9rem;">10/10</span></div></div><div class="recent-item"><div class="recent-item-title">Fire</div><div class="recent-item-meta">Eric Alexander</div><div class="recent-item-rating"><span class="rating">★★★★★★★★☆☆</span> <span style="font-size: 0.9rem;">8/10</span></div></div><div class="recent-item"><div class="recent-item-title">Standard Time</div><div class="recent-item-meta">Max Roach</div><div class="recent-item-rating"><span class="rating">★★★★★★★★★☆</span> <span style="font-size: 0.9rem;">9/10</span></div></div><div class="recent-item"><div class="recent-item-title">Kiss of Fire</div><div class="recent-item-meta">Harold Mabern Trio, Eric Alexander</div><div class="recent-item-rating"><span class="rating">★★★★★★★★★☆</span> <span style="font-size: 0.9rem;">9/10</span></div></div></div></div><a href="../albums/site/index.html" class="browse-button">Browse Albums →</a></div><div class="collection-card" style="--collection-accent: #c41e3a;"><div class="collection-header"><span class="collection-emoji">🎭</span><h2 class="collection-name">Broadway Shows</h2></div><div class="collection-stats"><div class="stat-item"><span class="stat-value">3</span><span class="stat-label">Total Shows</span></div><div class="stat-item"><span class="stat-value">3</span><span class="stat-label">Seen</span></div><div class="stat-item"><span class="stat-value">0</span><span class="stat-label">Wishlist</span></div></div><div class="recent-section"><h3 class="recent-title">Recently Added</h3><div class="recent-items"><div class="recent-item"><div class="recent-item-title">Maybe Happy Ending</div><div class="recent-item-meta">Belasco Theatre</div></div><div class="recent-item"><div class="recent-item-title">Just in Time</div><div class="recent-item-meta">Circle in the Square</div></div><div class="recent-item"><div class="recent-item-title">CHESS</div><div class="recent-item-meta">Imperial Theatre</div></div></div></div><a href="../shows/site/index.html" class="browse-button">Browse Broadway Shows →</a></div>
+    </div>
+
+    <footer>
+        Generated on 2026-02-15 20:10
+    </footer>
+</body>
+</html>
