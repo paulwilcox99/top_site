@@ -256,6 +256,65 @@ def get_shows_stats(db_path):
     return stats
 
 
+def get_restaurants_stats(db_path):
+    """Get statistics from restaurants database."""
+    stats = {
+        'available': False,
+        'total_count': 0,
+        'visited_count': 0,
+        'wishlist_count': 0,
+        'location_count': 0,
+        'avg_rating': None,
+        'recent_items': []
+    }
+
+    if not os.path.exists(db_path):
+        return stats
+
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        # Total count
+        cursor.execute("SELECT COUNT(*) as count FROM restaurants")
+        stats['total_count'] = cursor.fetchone()['count']
+
+        # Visited count
+        cursor.execute("SELECT COUNT(*) as count FROM restaurants WHERE visit_status = 'visited'")
+        stats['visited_count'] = cursor.fetchone()['count']
+
+        # Wishlist count
+        cursor.execute("SELECT COUNT(*) as count FROM restaurants WHERE visit_status = 'want_to_visit'")
+        stats['wishlist_count'] = cursor.fetchone()['count']
+
+        # Location count
+        cursor.execute("SELECT COUNT(DISTINCT location) as count FROM restaurants WHERE location IS NOT NULL")
+        stats['location_count'] = cursor.fetchone()['count']
+
+        # Average rating
+        cursor.execute("SELECT AVG(rating) as avg FROM restaurants WHERE rating IS NOT NULL AND visit_status = 'visited'")
+        result = cursor.fetchone()
+        if result['avg']:
+            stats['avg_rating'] = round(result['avg'], 1)
+
+        # Recent items
+        cursor.execute("""
+            SELECT restaurant_name, location, cuisine, rating, date_added
+            FROM restaurants
+            ORDER BY date_added DESC
+            LIMIT 5
+        """)
+        stats['recent_items'] = [dict(row) for row in cursor.fetchall()]
+
+        stats['available'] = True
+        conn.close()
+    except Exception as e:
+        print(f"Warning: Could not read restaurants database: {e}")
+
+    return stats
+
+
 def calculate_aggregate_stats(collections_stats):
     """Calculate aggregate statistics across all collections."""
     total_items = sum(stats.get('total_count', 0) for stats in collections_stats.values())
@@ -322,6 +381,19 @@ def generate_recent_item_card(item, collection_name):
         if rating:
             html += f'<div class="recent-item-rating">{generate_star_rating(rating)}</div>'
 
+    elif collection_name == "Restaurants":
+        restaurant = escape(item.get('restaurant_name', 'Unknown'))
+        location = escape(item.get('location', 'Unknown'))
+        cuisine = escape(item.get('cuisine', ''))
+        rating = item.get('rating')
+        html += f'<div class="recent-item-title">{restaurant}</div>'
+        html += f'<div class="recent-item-meta">{location}'
+        if cuisine:
+            html += f' • {cuisine}'
+        html += '</div>'
+        if rating:
+            html += f'<div class="recent-item-rating">{generate_star_rating(rating)}</div>'
+
     html += '</div>'
     return html
 
@@ -367,6 +439,13 @@ def generate_collection_card(collection, stats, config):
         elif name == "Broadway Shows":
             html += f'<div class="stat-item"><span class="stat-value">{stats["total_count"]}</span><span class="stat-label">Total Shows</span></div>'
             html += f'<div class="stat-item"><span class="stat-value">{stats["seen_count"]}</span><span class="stat-label">Seen</span></div>'
+            html += f'<div class="stat-item"><span class="stat-value">{stats["wishlist_count"]}</span><span class="stat-label">Wishlist</span></div>'
+            if stats['avg_rating']:
+                html += f'<div class="stat-item"><span class="stat-value">{stats["avg_rating"]}</span><span class="stat-label">Avg Rating</span></div>'
+
+        elif name == "Restaurants":
+            html += f'<div class="stat-item"><span class="stat-value">{stats["total_count"]}</span><span class="stat-label">Restaurants</span></div>'
+            html += f'<div class="stat-item"><span class="stat-value">{stats["visited_count"]}</span><span class="stat-label">Visited</span></div>'
             html += f'<div class="stat-item"><span class="stat-value">{stats["wishlist_count"]}</span><span class="stat-label">Wishlist</span></div>'
             if stats['avg_rating']:
                 html += f'<div class="stat-item"><span class="stat-value">{stats["avg_rating"]}</span><span class="stat-label">Avg Rating</span></div>'
@@ -731,6 +810,8 @@ def generate_site(config, force=False):
             stats = get_albums_stats(db_path)
         elif db_table == 'shows':
             stats = get_shows_stats(db_path)
+        elif db_table == 'restaurants':
+            stats = get_restaurants_stats(db_path)
         else:
             print(f"    Warning: Unknown collection type '{db_table}'")
             stats = {'available': False}

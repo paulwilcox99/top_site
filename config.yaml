@@ -30,10 +30,18 @@ collections:
     accent_color: "#c41e3a"
     db_table: "shows"
 
+  - name: "Restaurants"
+    emoji: "🍽️"
+    db_path: "../restaurants/restaurants.db"
+    site_path_file: "../restaurants/site/index.html"
+    site_path_http: "https://pauls-restaurants.vercel.app"
+    accent_color: "#d97706"
+    db_table: "restaurants"
+
 # Site configuration
 site:
   title: "Paul's Collections"
-  subtitle: "Books, Music & Theater"
+  subtitle: "Books, Music, Theater & Dining"
   output_dir: "site"
   show_recent_items: true
   recent_items_count: 5
