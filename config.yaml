@@ -2,15 +2,15 @@
 # =========================================
 
 # Deployment mode: 'file' for file:// protocol, 'http' for web server
-deployment_mode: 'file'  # Can be changed to 'http' for web hosting
+deployment_mode: 'http'
 
 # Collection definitions
 collections:
   - name: "Books"
     emoji: "📚"
-    db_path: "../books/books.db"
-    site_path_file: "../books/site/index.html"    # For file:// mode
-    site_path_http: "/books/index.html"           # For http:// mode
+    db_path: "../book-manager/books.db"
+    site_path_file: "../book-manager/site/index.html"
+    site_path_http: "https://site-tawny-beta.vercel.app"
     accent_color: "#8b2942"
     db_table: "books"
 
@@ -18,21 +18,21 @@ collections:
     emoji: "🎵"
     db_path: "../albums/albums.db"
     site_path_file: "../albums/site/index.html"
-    site_path_http: "/albums/index.html"
+    site_path_http: "https://pauls-albums.vercel.app"
     accent_color: "#e91e63"
     db_table: "albums"
 
   - name: "Broadway Shows"
     emoji: "🎭"
-    db_path: "../shows/shows.db"
-    site_path_file: "../shows/site/index.html"
-    site_path_http: "/shows/index.html"
+    db_path: "../broadway-shows/shows.db"
+    site_path_file: "../broadway-shows/site/index.html"
+    site_path_http: "https://pauls-broadway.vercel.app"
     accent_color: "#c41e3a"
     db_table: "shows"
 
 # Site configuration
 site:
-  title: "My Collections"
+  title: "Paul's Collections"
   subtitle: "Books, Music & Theater"
   output_dir: "site"
   show_recent_items: true
